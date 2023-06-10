@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        todo: "48px, auto, 120px, 200px, 90px"
+        todo: "48px, auto, 150px, 100px, 90px"
       }
     }
   }

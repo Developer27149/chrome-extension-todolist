@@ -149,7 +149,7 @@
   }
 }
 .todo-item {
-  @apply p-4 pr-2 m-4 mx-8 border border-gray-100 rounded-md grid  grid-cols-todo border-l-[4px];
+  @apply p-4 px-2 m-4 mx-8 border border-gray-100 rounded-md grid  grid-cols-todo border-l-[4px];
 }
 .reverse-status {
   animation: reverse-status 0.7s ease-in-out forwards !important;

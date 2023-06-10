@@ -1,8 +1,10 @@
 import clsx from "clsx"
 import { useAtom } from "jotai"
+import { marked } from "marked"
 import { type CSSProperties, useEffect, useState } from "react"
 import { AiOutlineEdit } from "react-icons/ai"
 import { BsCalendar2Check, BsCheck2Circle, BsCircle } from "react-icons/bs"
+import { VscTasklist } from "react-icons/vsc"
 
 import {
   calcTodoExprTime,
@@ -27,6 +29,10 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
   const [, setEditModal] = useAtom(editModelAtom)
   const [, setTodoList] = useAtom(todoListAtom)
   const [favicon, setFavicon] = useState("")
+
+  const renderHTML = (markdown: string) => {
+    return marked.parse(markdown)
+  }
 
   const onChangeStatus = async () => {
     let newTodoItem
@@ -90,15 +96,14 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
       style={styles}>
       {/* add favicon */}
       <div className="flex justify-center items-center">
-        {favicon !== "" && <img src={favicon} className="w-[30px] h-[30px]" />}
+        {favicon === "" ? (
+          <VscTasklist className="w-[30px] h-[30px]" />
+        ) : (
+          <img src={favicon} className="w-[30px] h-[30px]" />
+        )}
       </div>
-      <div>
-        <h5
-          className={clsx("text-[16px] mb-2 truncate", {
-            "line-through": status === ETaskStatus.已完成
-          })}>
-          {taskName}
-        </h5>
+      <div className="flex flex-col justify-center">
+        <h5 dangerouslySetInnerHTML={{ __html: renderHTML(taskName) }}></h5>
         <p
           className={clsx("text-gray-500 text-[13px]", {
             "line-through text-gray-400": status == ETaskStatus.已完成

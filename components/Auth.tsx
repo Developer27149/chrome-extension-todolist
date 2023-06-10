@@ -1,13 +1,13 @@
 import { BsEye, BsEyeSlash } from "react-icons/bs"
 import { getInitData, onLogin } from "~utils/services"
 import { taskTypeListAtom, todoListAtom, userInfoAtom } from "~utils/store"
+import { useEffect, useState } from "react"
 
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { HOMEPAGE } from "~utils/config"
 import authSvg from "data-base64:~assets/auth.svg"
 import { onClickStopPropagation } from "~utils"
 import { useAtom } from "jotai"
-import { useState } from "react"
 
 export default function Auth({ setAuth }: { setAuth: () => void }) {
   const [, setTaskType] = useAtom(taskTypeListAtom)
@@ -46,6 +46,12 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    chrome.storage.local.get("userInfo").then(({ userInfo }) => {
+      form.phone = userInfo.phone
+    })
+  }, [])
   return (
     <form
       onSubmit={onSubmit}
