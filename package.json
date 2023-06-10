@@ -12,6 +12,7 @@
   "dependencies": {
     "@plasmohq/messaging": "^0.3.3",
     "bcryptjs": "^2.4.3",
+    "chart.xkcd": "^1.1.13",
     "chart.xkcd-react": "^0.0.6",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
