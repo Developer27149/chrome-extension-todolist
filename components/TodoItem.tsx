@@ -103,13 +103,14 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
         )}
       </div>
       <div className="flex flex-col justify-center">
-        <h5 dangerouslySetInnerHTML={{ __html: renderHTML(taskName) }}></h5>
+        <h5
+          className="text-[#3e3e3e]"
+          dangerouslySetInnerHTML={{ __html: renderHTML(taskName) }}></h5>
         <p
           className={clsx("text-gray-500 text-[13px]", {
             "line-through text-gray-400": status == ETaskStatus.已完成
-          })}>
-          {taskContent}
-        </p>
+          })}
+          dangerouslySetInnerHTML={{ __html: renderHTML(taskContent) }}></p>
       </div>
       <div
         className="text-[12px] text-white p-0.5 flex gap-1 flex-wrap items-center justify-center"

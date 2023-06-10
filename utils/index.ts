@@ -230,21 +230,12 @@ export const resolveStringOrDefaultValue = async (
 }
 
 export const getFaviconFromTaskName = async (taskName: string) => {
-  // if task name is a markdown link,get it's origin
-  // if (/\]\(http.*\)/i.test(taskName)) {
-  // }
-
-  // taskName maybe is: [xxx](http://xxx.com)
   try {
-    console.log("task name:", taskName)
     const url = taskName.match(/\]\((http.*)\)$/i)?.[1]
     const origin = new URL(url).origin
-    console.log("origin:", origin)
     const favicon = await getFavicon(origin)
-    console.log("favicon from storage:", favicon)
     return resolveStringOrDefaultValue(favicon, "")
   } catch (error) {
-    console.log("get favicon fail", error)
     return ""
   }
 }
