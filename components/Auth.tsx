@@ -1,13 +1,13 @@
+import authSvg from "data-base64:~assets/auth.svg"
+import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { BsEye, BsEyeSlash } from "react-icons/bs"
+
+import { onClickStopPropagation } from "~utils"
+import { HOMEPAGE } from "~utils/config"
 import { getInitData, onLogin } from "~utils/services"
 import { taskTypeListAtom, todoListAtom, userInfoAtom } from "~utils/store"
-import { useEffect, useState } from "react"
-
-import { AiOutlineLoading3Quarters } from "react-icons/ai"
-import { HOMEPAGE } from "~utils/config"
-import authSvg from "data-base64:~assets/auth.svg"
-import { onClickStopPropagation } from "~utils"
-import { useAtom } from "jotai"
 
 export default function Auth({ setAuth }: { setAuth: () => void }) {
   const [, setTaskType] = useAtom(taskTypeListAtom)
@@ -48,8 +48,11 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
   }
 
   useEffect(() => {
-    chrome.storage.local.get("userInfo").then(({ userInfo }) => {
-      form.phone = userInfo.phone
+    chrome.storage.sync.get("loginUserData").then((response) => {
+      setForm({
+        phone: response?.loginUserData?.phone ?? "",
+        password: ""
+      })
     })
   }, [])
   return (

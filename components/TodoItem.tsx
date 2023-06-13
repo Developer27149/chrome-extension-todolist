@@ -1,10 +1,11 @@
 import clsx from "clsx"
 import { useAtom } from "jotai"
 import { marked } from "marked"
-import { type CSSProperties, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import type { CSSProperties } from "react"
 import { AiOutlineEdit } from "react-icons/ai"
 import { BsCalendar2Check, BsCheck2Circle, BsCircle } from "react-icons/bs"
-import { VscTasklist } from "react-icons/vsc"
+import { FcTodoList } from "react-icons/fc"
 
 import {
   calcTodoExprTime,
@@ -14,7 +15,8 @@ import {
 } from "~utils"
 import { onModifyTodoItem, onRemoveTodoItem } from "~utils/services"
 import { editModelAtom, todoListAtom } from "~utils/store"
-import { ETaskStatus, type ITodoItem } from "~utils/types"
+import { ETaskStatus } from "~utils/types"
+import type { ITodoItem } from "~utils/types"
 
 import CloseButton from "./CloseButton"
 
@@ -97,7 +99,7 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
       {/* add favicon */}
       <div className="flex justify-center items-center">
         {favicon === "" ? (
-          <VscTasklist className="w-[30px] h-[30px]" />
+          <FcTodoList className="w-[30px] h-[30px]" />
         ) : (
           <img src={favicon} className="w-[30px] h-[30px]" />
         )}

@@ -1,9 +1,9 @@
-import type { ITaskType, ITodoItem, IUserInfo } from "./types"
-import { addDays, addMinutes, isBefore } from "date-fns"
-
 import bcrypt from "bcryptjs"
-import { getInitData } from "./services"
+import { addDays, addMinutes, isBefore } from "date-fns"
 import { is } from "date-fns/locale"
+
+import { getInitData } from "./services"
+import type { ITaskType, ITodoItem, IUserInfo } from "./types"
 
 export const request = async <T>(
   url: string,
@@ -143,7 +143,6 @@ export const writeCache = async (
 export const readCacheOrRefetch = async () => {
   const { expr } = (await chrome.storage.local.get("expr")) as { expr: number }
   const isExpr = expr && expr > Date.now()
-  console.log("isExpr", isExpr, expr)
   if (isExpr !== true) {
     // 发起请求读取数据
     const { taskTypeList, todoList } = await getInitData()
