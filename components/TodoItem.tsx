@@ -84,7 +84,6 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
 
   useEffect(() => {
     getFaviconFromTaskName(taskName).then((favicon) => {
-      console.log("favicon:", favicon)
       setFavicon(favicon)
     })
   }, [taskName])

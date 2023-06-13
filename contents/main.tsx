@@ -1,12 +1,12 @@
+import styleText from "data-text:../style.css"
+import hotkeys from "hotkeys-js"
+import { useAtom } from "jotai"
+import jwtDecode from "jwt-decode"
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
 import { useEffect, useState } from "react"
 
 import Auth from "~components/Auth"
 import MainContainer from "~components/MainContainer"
-import hotkeys from "hotkeys-js"
-import jwtDecode from "jwt-decode"
-import styleText from "data-text:../style.css"
-import { useAtom } from "jotai"
 import { userInfoAtom } from "~utils/store"
 
 export const getStyle: PlasmoGetStyle = () => {
@@ -40,9 +40,6 @@ const CustomButton = () => {
       },
       true
     )
-    chrome.storage.local.get().then((result) => {
-      console.log("result", result)
-    })
   }, [])
 
   useEffect(() => {
