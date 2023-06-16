@@ -20,10 +20,8 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async () => {
     try {
-      e.preventDefault()
-      if (isLoading) return
       setIsLoading(true)
       if (form.password.length < 6 || form.phone.length <= 0) {
         setError("手机号或密码不正确")
@@ -56,13 +54,11 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
     })
   }, [])
   return (
-    <form
-      onSubmit={onSubmit}
+    <div
       onClick={onClickStopPropagation}
       className="flex flex-col w-[60vw] max-w-[900px] h-[400px] pb-12 bg-white rounded-md justify-center custom-shadow relative">
       <div className="w-[300px] z-10 flex flex-col gap-4 p-8 pb-0 absolute left-0 top-0 bottom-0 bg-white rounded-l-md">
         <h3 className="pl-10 pb-8">欢迎回来，{userInfo.phone ?? "朋友"}</h3>
-
         <div className=" flex gap-2 flex-col">
           <label
             className="w-16 inline-block text-gray-500 text-[14px]"
@@ -96,22 +92,26 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
             }}
           />
           <span
-            className="relative bottom-[32px] left-[210px] cursor-pointer opacity-50"
+            className="relative bottom-[36px] left-[210px] cursor-pointer opacity-50 "
             onClick={() => setShowRawPassword(!showRawPassword)}>
             {showRawPassword ? <BsEye /> : <BsEyeSlash />}
           </span>
         </div>
         <button
           className="rounded-sm text-[14px] bg-[#cb5647] text-white relative overflow-hidden"
-          type="submit">
+          onClick={(e) => {
+            e.stopPropagation()
+            if (isLoading) return
+            onSubmit()
+          }}>
           <div
             className="relative transition-all"
             style={{ top: isLoading ? "50%" : "-50%" }}>
-            <div className="flex items-center gap-2 justify-center relative bottom-2">
+            <div className="flex items-center gap-2 justify-center relative bottom-[10px]">
               <AiOutlineLoading3Quarters className="animate-spin" />
               <span>登录中...</span>
             </div>
-            <span className="top-2 relative">登录</span>
+            <span className="top-[10px] relative">登录</span>
           </div>
         </button>
         <div
@@ -127,6 +127,6 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
         忘记密码 / 注册用户
       </a>
       <img className="absolute top-0 bottom-0 right-0 h-[100%]" src={authSvg} />
-    </form>
+    </div>
   )
 }

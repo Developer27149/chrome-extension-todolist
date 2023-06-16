@@ -1,20 +1,21 @@
+import clsx from "clsx"
+import { useAtom } from "jotai"
+import { useEffect, useState } from "react"
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
+import { BsCalendar2Check } from "react-icons/bs"
+import { IoCloseOutline } from "react-icons/io5"
+
+import { sendToBackground } from "@plasmohq/messaging"
+
 import {
   calcExprIndex,
   calcExprTimeByIndex,
   exprDateOptions,
   onClickStopPropagation
 } from "~utils"
-import { editModelAtom, taskTypeListAtom } from "~utils/store"
 import { onCreateNewTodoItem, onModifyTodoItem } from "~utils/services"
-import { useEffect, useState } from "react"
-
-import { AiOutlineLoading3Quarters } from "react-icons/ai"
-import { BsCalendar2Check } from "react-icons/bs"
-import { IoCloseOutline } from "react-icons/io5"
-import clsx from "clsx"
-import { sendToBackground } from "@plasmohq/messaging"
+import { editModelAtom, taskTypeListAtom } from "~utils/store"
 import { todoListAtom } from "~utils/store"
-import { useAtom } from "jotai"
 
 interface IProps {
   onClose: () => void
@@ -58,7 +59,7 @@ export default function EditTodoItem({ onClose }: IProps) {
       setTaskTypeList(newTaskTypeList)
       onClose()
     } catch (error) {
-      console.log(error)
+      console.log("create task type fail:", error)
     } finally {
       setIsLoading(false)
     }

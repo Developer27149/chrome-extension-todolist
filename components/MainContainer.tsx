@@ -1,30 +1,40 @@
+import clsx from "clsx"
+import { useAtom, useSetAtom } from "jotai"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { AiFillGithub, AiOutlineHome } from "react-icons/ai"
+import { BsPlusSquareDotted } from "react-icons/bs"
+import { CiLogout } from "react-icons/ci"
 import { IoCloseOutline, IoRefreshOutline } from "react-icons/io5"
-import { editModelAtom, taskTypeListAtom, todoListAtom } from "~utils/store"
+
 import {
   getTagColorFunction,
   onClickStopPropagation,
   readCacheOrRefetch,
   writeCache
 } from "~utils"
-import { useCallback, useEffect, useMemo, useState } from "react"
-
-import { BsPlusSquareDotted } from "react-icons/bs"
-import { ETaskStatus } from "~utils/types"
-import EditTodoItem from "./EditTodoItem"
 import { GITHUB } from "~utils/config"
 import { HOMEPAGE } from "~utils/config"
+import { getInitData } from "~utils/services"
+import {
+  editModelAtom,
+  taskTypeListAtom,
+  todoListAtom,
+  userInfoAtom
+} from "~utils/store"
+import { ETaskStatus } from "~utils/types"
+import type { IUserInfo } from "~utils/types"
+
+import EditTodoItem from "./EditTodoItem"
 import Loading from "./Loading"
 import Statistics from "./Statistics"
 import TodoItem from "./TodoItem"
-import clsx from "clsx"
-import { getInitData } from "~utils/services"
-import { useAtom } from "jotai"
 
 export default function MainContainer({
-  onDisActive
+  onDisActive,
+  onDisReady
 }: {
   onDisActive: () => void
+  onDisReady: () => void
 }) {
   const [isLoading, setIsLoading] = useState(true)
   const [todoList, setTodoList] = useAtom(todoListAtom)
@@ -34,6 +44,7 @@ export default function MainContainer({
   const [editModal, setEditModal] = useAtom(editModelAtom)
   const getTagColor = useCallback(getTagColorFunction, [])()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const setUserInfo = useSetAtom(userInfoAtom)
 
   const currentTodoList = useMemo(() => {
     return todoList.filter(
@@ -85,6 +96,14 @@ export default function MainContainer({
     }
   }
 
+  const onExit = () => {
+    // clear token and cache
+    chrome.storage.sync.clear().then(() => {
+      setUserInfo({} as IUserInfo)
+      onDisReady()
+    })
+  }
+
   return (
     <div
       className="w-[80vw] max-w-[922px] min-h-[400px] max-h-[min(860px, 90vh)] bg-white rounded-md custom-shadow relative overflow-hidden"
@@ -97,11 +116,17 @@ export default function MainContainer({
           <AiOutlineHome className="text-[#cb5647]" />
           待办事项
         </a>
-        <span className="transition-all translate-y-[-48px] group-hover:translate-y-0 absolute right-[72px] text-[20px]">
+        <span className="transition-all translate-y-[-48px] group-hover:translate-y-0 absolute right-[96px] text-[20px]">
           <a href={GITHUB} target="_blank">
             <AiFillGithub />
           </a>
         </span>
+        <CiLogout
+          className={clsx(
+            "cursor-pointer p-[4px] rounded-full hover:bg-gray-100 transition-all text-[24px] mr-1 relative top-[1px]"
+          )}
+          onClick={onExit}
+        />
         <IoRefreshOutline
           className={clsx(
             { "animate-spin": isRefreshing },

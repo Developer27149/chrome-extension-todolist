@@ -215,7 +215,6 @@ export const getFavicon = async (origin: string) => {
     const { [origin]: favicon } = await chrome.storage.local.get(origin)
     return favicon
   } catch (error) {
-    console.log("get favicon fail", error)
     return null
   }
 }

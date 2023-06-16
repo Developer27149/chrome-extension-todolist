@@ -3,7 +3,7 @@ import hotkeys from "hotkeys-js"
 import { useAtom } from "jotai"
 import jwtDecode from "jwt-decode"
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import Auth from "~components/Auth"
 import MainContainer from "~components/MainContainer"
@@ -16,19 +16,23 @@ export const getStyle: PlasmoGetStyle = () => {
 }
 
 const CustomButton = () => {
-  const [active, setActive] = useState(false)
+  const isReady = useRef<boolean>(false)
+
+  const [active, setActive] = useState<boolean>(false)
 
   const [hadAuth, setHadAuth] = useState<undefined | boolean>()
   const [, setUserInfo] = useAtom(userInfoAtom)
   useEffect(() => {
     hotkeys("ctrl+j,command+.,win+.", function (event) {
       event.preventDefault()
-      if (active === true) return
+      if (isReady.current) return
+      isReady.current = true
       setActive(true)
     })
     hotkeys("escape", function (event) {
       event.preventDefault()
-      if (active === false) return
+      if (isReady.current === false) return
+      isReady.current = false
       setActive(false)
     })
     document.querySelector("#_extension_container_")?.addEventListener(
@@ -70,6 +74,9 @@ const CustomButton = () => {
     document.body.style.overflow = active === true ? "hidden" : "unset"
   }, [active])
 
+  // if (active === false) return <div className="bg-white p-2">没有激活</div>
+  // if (!hadAuth) return <div>没有初始化认证</div>
+
   if (active === false || hadAuth === undefined) return null
 
   return (
@@ -78,7 +85,13 @@ const CustomButton = () => {
       className="fixed inset-0 flex justify-center items-center w-screen h-screen bg-[#33333380]"
       onClick={() => setActive(false)}>
       {hadAuth ? (
-        <MainContainer onDisActive={() => setActive(false)} />
+        <MainContainer
+          onDisReady={() => setHadAuth(false)}
+          onDisActive={() => {
+            isReady.current = false
+            setActive(false)
+          }}
+        />
       ) : (
         <Auth setAuth={() => setHadAuth(true)} />
       )}

@@ -50,37 +50,41 @@ import type { ITaskType } from "~utils/types"
               } // function to inject
             },
             async (res) => {
-              const { result } = res[0]
-              // save favIconUrl to localStorage
-              const origin = new URL(url).origin
-              let cache = await getFavicon(origin)
-              if (!cache) {
-                // fetch favicon base64
-                const res = await fetch(favIconUrl)
-                const blob = await res.blob()
-                const base64 = await new Promise((resolve) => {
-                  const reader = new FileReader()
-                  reader.readAsDataURL(blob)
-                  reader.onloadend = () => {
-                    resolve(reader.result)
-                  }
-                })
-                saveFavicon(origin, base64 as string)
-                cache = base64 as string
-              }
+              try {
+                const { result } = res[0]
+                // save favIconUrl to localStorage
+                const origin = new URL(url).origin
+                let cache = await getFavicon(origin)
+                if (!cache) {
+                  // fetch favicon base64
+                  const res = await fetch(favIconUrl)
+                  const blob = await res.blob()
+                  const base64 = await new Promise((resolve) => {
+                    const reader = new FileReader()
+                    reader.readAsDataURL(blob)
+                    reader.onloadend = () => {
+                      resolve(reader.result)
+                    }
+                  })
+                  saveFavicon(origin, base64 as string)
+                  cache = base64 as string
+                }
 
-              const [menuId, idx] = (info.menuItemId as string).split("-")
-              const taskType = taskTypeList.find(
-                (item: ITaskType) => `${item.typeId}` === menuId
-              )
-              if (!taskType) return
-              const body = {
-                taskContent: result ?? "",
-                taskName: `[${title}](${url})`,
-                typeId: +menuId,
-                expectTime: calcExprTimeByIndex(+idx)
+                const [menuId, idx] = (info.menuItemId as string).split("-")
+                const taskType = taskTypeList.find(
+                  (item: ITaskType) => `${item.typeId}` === menuId
+                )
+                if (!taskType) return
+                const body = {
+                  taskContent: result ?? "",
+                  taskName: `[${title}](${url})`,
+                  typeId: +menuId,
+                  expectTime: calcExprTimeByIndex(+idx)
+                }
+                createNewTodoItem(body)
+              } catch (error) {
+                console.log("get favicon fail:", error)
               }
-              createNewTodoItem(body)
             }
           )
         })

@@ -9,3 +9,14 @@
 ## Fix
 
 无
+
+# 0.0.5
+
+## Update
+
+- add exit your account
+- clear debug code
+
+## fix
+
+none
