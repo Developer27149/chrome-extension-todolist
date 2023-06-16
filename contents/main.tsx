@@ -74,9 +74,6 @@ const CustomButton = () => {
     document.body.style.overflow = active === true ? "hidden" : "unset"
   }, [active])
 
-  // if (active === false) return <div className="bg-white p-2">没有激活</div>
-  // if (!hadAuth) return <div>没有初始化认证</div>
-
   if (active === false || hadAuth === undefined) return null
 
   return (
