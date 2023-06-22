@@ -189,17 +189,16 @@ export const getTagColorFunction = () => {
     "#84cc16",
     "#22c55e"
   ]
-  const colorMap = {}
-  return (tagName: string | number = "-") => {
-    if (colorMap[tagName]) {
-      return colorList[tagName] as string
-    } else {
-      const color =
-        colorList.find((c) => !Object.values(colorMap).includes(c)) ??
-        colorList[0]
-      colorMap[tagName] = color
-      return color
-    }
+
+  // if you need a map, use this
+  const cacheMap = new Map()
+  return (id: string = "-") => {
+    // cache tag color by id
+    if (cacheMap.get(id)) return cacheMap.get(id)
+    const color =
+      colorList.find((c) => ![...cacheMap.values()].includes(c)) ?? colorList[0]
+    cacheMap.set(id, color)
+    return color
   }
 }
 

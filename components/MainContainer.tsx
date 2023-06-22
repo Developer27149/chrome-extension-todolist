@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { useAtom, useSetAtom } from "jotai"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { AiFillGithub, AiOutlineHome } from "react-icons/ai"
 import { BsPlusSquareDotted } from "react-icons/bs"
 import { CiLogout } from "react-icons/ci"
@@ -30,6 +30,8 @@ import Loading from "./Loading"
 import Statistics from "./Statistics"
 import TodoItem from "./TodoItem"
 
+const getColor = getTagColorFunction()
+
 export default function MainContainer({
   onDisActive,
   onDisReady
@@ -43,7 +45,6 @@ export default function MainContainer({
   const [offset, setOffset] = useState(2)
   const [status, setStatus] = useState(ETaskStatus.未完成)
   const [editModal, setEditModal] = useAtom(editModelAtom)
-  const getTagColor = useCallback(getTagColorFunction, [])()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const setUserInfo = useSetAtom(userInfoAtom)
   const [config] = useAtom(configAtom)
@@ -150,15 +151,16 @@ export default function MainContainer({
           <Statistics />
           {currentTodoList.length > 0 ? (
             currentTodoList
-              .filter(
-                (item) =>
-                  config.currentTag === "" ||
+              .filter((item) => {
+                if (config.currentTag === "") return true
+                return (
                   item?.typeMessage?.typeName?.trim() ===
-                    config.currentTag.trim()
-              )
+                  config.currentTag.trim()
+                )
+              })
               .map((item, idx) => (
                 <TodoItem
-                  getTagColor={getTagColor}
+                  tagColor={getColor(`${item?.typeMessage?.typeId ?? "-"}`)}
                   key={item.taskId}
                   item={item}
                   styles={{ animationDelay: `${idx * 100}ms` }}

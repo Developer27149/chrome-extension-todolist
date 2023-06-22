@@ -1,21 +1,20 @@
-import chartXkcd from "chart.xkcd"
-import { Pie } from "chart.xkcd-react"
-import clsx from "clsx"
-import { startOfDay } from "date-fns"
-import { useAtom } from "jotai"
-import { useMemo } from "react"
 import { BsJournalCheck, BsListTask } from "react-icons/bs"
-
-import { calcTodoCountInWeek } from "~utils"
 import {
   configAtom,
   taskTypeListAtom,
   todoListAtom,
   userInfoAtom
 } from "~utils/store"
-import { ETaskStatus } from "~utils/types"
 
 import Avatar from "./Avatar"
+import { ETaskStatus } from "~utils/types"
+import { Pie } from "chart.xkcd-react"
+import { calcTodoCountInWeek } from "~utils"
+import chartXkcd from "chart.xkcd"
+import clsx from "clsx"
+import { startOfDay } from "date-fns"
+import { useAtom } from "jotai"
+import { useMemo } from "react"
 
 export default function Statistics() {
   const [userInfo] = useAtom(userInfoAtom)
@@ -51,7 +50,7 @@ export default function Statistics() {
     <div className="rounded-md flex items-center gap-4 p-4">
       <div className="bg-[#db4c3f] text-white p-4 rounded-md">
         <div className="flex flex-col justify-center items-center my-4">
-          <Avatar name={userInfo.username} />
+          <Avatar name={userInfo.username} rawAvatarUrl={userInfo.avatar} />
           <div className="text-center text-[18px] font-bold">
             {userInfo.username}
           </div>

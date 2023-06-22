@@ -14,7 +14,7 @@ import {
   isExprTimeExpired
 } from "~utils"
 import { onModifyTodoItem, onRemoveTodoItem } from "~utils/services"
-import { editModelAtom, todoListAtom } from "~utils/store"
+import { configAtom, editModelAtom, todoListAtom } from "~utils/store"
 import { ETaskStatus } from "~utils/types"
 import type { ITodoItem } from "~utils/types"
 
@@ -23,14 +23,16 @@ import CloseButton from "./CloseButton"
 interface IProps {
   item: ITodoItem
   styles?: CSSProperties
-  getTagColor: (tagId?: number) => string
+  tagColor: string
 }
-export default function TodoItem({ item, styles, getTagColor }: IProps) {
-  const { taskName, taskContent, taskId, status, expectTime } = item
+export default function TodoItem({ item, styles, tagColor }: IProps) {
+  const { taskName, taskContent, taskId, status, expectTime, typeMessage } =
+    item
   const [isLoading, setIsLoading] = useState(false)
   const [, setEditModal] = useAtom(editModelAtom)
   const [, setTodoList] = useAtom(todoListAtom)
   const [favicon, setFavicon] = useState("")
+  const [config, setConfig] = useAtom(configAtom)
 
   const renderHTML = (markdown: string) => {
     return marked.parse(markdown)
@@ -63,6 +65,14 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
           })
         }
       }, 1000)
+    }
+  }
+
+  const onSetCurrentTag = () => {
+    if (config.currentTag !== "") {
+      setConfig({ currentTag: "" })
+    } else {
+      setConfig({ currentTag: typeMessage.typeName.trim() })
     }
   }
 
@@ -117,8 +127,9 @@ export default function TodoItem({ item, styles, getTagColor }: IProps) {
         className="text-[12px] text-white p-0.5 flex gap-1 flex-wrap items-center justify-center"
         style={{ opacity: item.typeMessage?.typeId ? 1 : 0 }}>
         <span
-          style={{ background: getTagColor(item.typeMessage?.typeId) }}
-          className="p-1 rounded-sm inline-block h-max">
+          style={{ background: tagColor }}
+          className="p-1 rounded-sm inline-block h-max cursor-pointer"
+          onClick={onSetCurrentTag}>
           {item.typeMessage?.typeName}
         </span>
       </div>

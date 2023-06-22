@@ -47,6 +47,9 @@
       "contextMenus",
       "unlimitedStorage",
       "scripting"
+    ],
+    "host_permissions": [
+      "https://*.aliyuncs.com/*"
     ]
   }
 }
