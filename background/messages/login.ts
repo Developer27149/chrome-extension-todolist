@@ -1,4 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
+
 import { login } from "~utils/services"
 
 const handler: PlasmoMessaging.MessageHandler<{
@@ -7,7 +8,8 @@ const handler: PlasmoMessaging.MessageHandler<{
 }> = async (req, res) => {
   try {
     const { phone, password } = req.body
-    return res.send(await login(phone, password))
+    const loginRes = await login(phone, password)
+    return res.send(loginRes)
   } catch (error) {
     return res.send(null)
   }

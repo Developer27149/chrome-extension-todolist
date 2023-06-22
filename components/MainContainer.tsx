@@ -16,6 +16,7 @@ import { GITHUB } from "~utils/config"
 import { HOMEPAGE } from "~utils/config"
 import { getInitData } from "~utils/services"
 import {
+  configAtom,
   editModelAtom,
   taskTypeListAtom,
   todoListAtom,
@@ -45,6 +46,7 @@ export default function MainContainer({
   const getTagColor = useCallback(getTagColorFunction, [])()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const setUserInfo = useSetAtom(userInfoAtom)
+  const [config] = useAtom(configAtom)
 
   const currentTodoList = useMemo(() => {
     return todoList.filter(
@@ -147,14 +149,21 @@ export default function MainContainer({
           style={{ height: "calc(min(860px, 90vh) - 107px)" }}>
           <Statistics />
           {currentTodoList.length > 0 ? (
-            currentTodoList.map((item, idx) => (
-              <TodoItem
-                getTagColor={getTagColor}
-                key={item.taskId}
-                item={item}
-                styles={{ animationDelay: `${idx * 100}ms` }}
-              />
-            ))
+            currentTodoList
+              .filter(
+                (item) =>
+                  config.currentTag === "" ||
+                  item?.typeMessage?.typeName?.trim() ===
+                    config.currentTag.trim()
+              )
+              .map((item, idx) => (
+                <TodoItem
+                  getTagColor={getTagColor}
+                  key={item.taskId}
+                  item={item}
+                  styles={{ animationDelay: `${idx * 100}ms` }}
+                />
+              ))
           ) : (
             <div className="h-[300px] flex justify-center items-center">
               <span className="text-gray-300">空空如也...</span>

@@ -1,7 +1,7 @@
 {
   "name": "todo_list",
   "displayName": "DODD",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Jimmy's todo list app for chrome extension: DODD",
   "author": "Developer27149",
   "scripts": {

@@ -52,11 +52,13 @@ export default function EditTodoItem({ onClose }: IProps) {
     try {
       if (newType.length === 0 && isLoading) return
       setIsLoading(true)
-      const { data: newTaskTypeList } = await sendToBackground({
+      const _newType = await sendToBackground({
         name: "createTaskType",
-        body: newType
+        body: {
+          typeName: newType
+        }
       })
-      setTaskTypeList(newTaskTypeList)
+      setTaskTypeList([...taskTypeList, _newType])
       onClose()
     } catch (error) {
       console.log("create task type fail:", error)
@@ -111,7 +113,7 @@ export default function EditTodoItem({ onClose }: IProps) {
           typeId: selectTypeId,
           expectTime: calcExprTimeByIndex(exprDateIndex)
         })
-        setTodoList((i) => [...i, newTodoItem])
+        setTodoList((i) => [newTodoItem, ...i])
       }
     } catch (error) {
       console.error("create todo item error:", error)

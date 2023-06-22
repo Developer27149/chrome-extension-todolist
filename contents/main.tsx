@@ -18,7 +18,7 @@ export const getStyle: PlasmoGetStyle = () => {
 const CustomButton = () => {
   const isReady = useRef<boolean>(false)
 
-  const [active, setActive] = useState<boolean>(false)
+  const [active, setActive] = useState<boolean>(!false)
 
   const [hadAuth, setHadAuth] = useState<undefined | boolean>()
   const [, setUserInfo] = useAtom(userInfoAtom)

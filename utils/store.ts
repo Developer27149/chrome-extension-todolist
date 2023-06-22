@@ -5,6 +5,7 @@ import type { ITaskType, ITodoItem, IUserInfo } from "./types"
 const userInfoAtom = atom({} as IUserInfo)
 const todoListAtom = atom([] as ITodoItem[])
 const taskTypeListAtom = atom([] as ITaskType[])
+const configAtom = atom({ currentTag: "" })
 
 export const editModelAtom = atom({
   visible: false,
@@ -44,5 +45,6 @@ export {
   getTodoListByTypeId,
   getTodoTaskById,
   removeTodoTaskById,
-  modifyTodoTaskById
+  modifyTodoTaskById,
+  configAtom
 }

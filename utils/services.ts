@@ -1,3 +1,6 @@
+import { sendToBackground } from "@plasmohq/messaging"
+
+import { generateHashPassword, request } from "./"
 import type {
   IAddTodoItemParams,
   IGetTodoListPrams,
@@ -5,11 +8,8 @@ import type {
   IUpdateTodoItemParams,
   IUserInfo
 } from "./types"
-import { generateHashPassword, request } from "./"
-
 import type { IPaginationData } from "./types"
 import type { ITodoItem } from "./types"
-import { sendToBackground } from "@plasmohq/messaging"
 
 const API_URL = "https://api.jimmyxuexue.top"
 
@@ -22,7 +22,7 @@ export const getTodoList = (params: IGetTodoListPrams) =>
   })
 
 export const createNewTaskType = (typeName: string) =>
-  request(`${API_URL}/taskType/add`, {
+  request<ITaskType>(`${API_URL}/taskType/add`, {
     body: JSON.stringify({
       typeName,
       desc: "来自插件的匿名描述，反正你也用不上"

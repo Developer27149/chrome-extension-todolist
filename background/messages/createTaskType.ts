@@ -7,7 +7,8 @@ const handler: PlasmoMessaging.MessageHandler<{
   [k: string]: string
 }> = async (req, res) => {
   const { typeName } = req.body
-  return res.send(await createNewTaskType(typeName))
+  const newType = await createNewTaskType(typeName)
+  return res.send(newType)
 }
 
 export default handler

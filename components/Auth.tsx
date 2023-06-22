@@ -92,7 +92,7 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
             }}
           />
           <span
-            className="relative bottom-[36px] left-[210px] cursor-pointer opacity-50 "
+            className="relative bottom-[33px] left-[210px] cursor-pointer opacity-50 "
             onClick={() => setShowRawPassword(!showRawPassword)}>
             {showRawPassword ? <BsEye /> : <BsEyeSlash />}
           </span>
@@ -107,7 +107,7 @@ export default function Auth({ setAuth }: { setAuth: () => void }) {
           <div
             className="relative transition-all"
             style={{ top: isLoading ? "50%" : "-50%" }}>
-            <div className="flex items-center gap-2 justify-center relative bottom-[10px]">
+            <div className="flex items-center gap-2 justify-center relative bottom-[8px]">
               <AiOutlineLoading3Quarters className="animate-spin" />
               <span>登录中...</span>
             </div>

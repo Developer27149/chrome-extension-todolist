@@ -20,3 +20,13 @@
 ## fix
 
 none
+
+# 0.0.8
+
+## Update
+
+- none
+
+## Fix
+
+- user avatar error
